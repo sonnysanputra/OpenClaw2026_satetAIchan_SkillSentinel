@@ -1,0 +1,20 @@
+[Unit]
+Description=SkillSentinel %i agent bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/skillsentinel
+EnvironmentFile=/root/.skillsentinel/bots.env
+Environment="AGENT_NAME=%i"
+Environment="PYTHONPATH=/opt/skillsentinel/src"
+ExecStart=/opt/skillsentinel/.venv/bin/python3 -m skillsentinel.bots.agent_bot
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
