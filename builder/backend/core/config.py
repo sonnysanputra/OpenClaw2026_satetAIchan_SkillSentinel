@@ -18,9 +18,9 @@ class Settings(BaseSettings):
     # Frontend
     frontend_origin: str = "http://localhost:3000"
 
-    # SkillsHub
+    # SkillsHub (catalog is hardcoded; these vars are kept for future live-fetch support)
     skillshub_readme_url: str = (
-        "https://raw.githubusercontent.com/mergisi/awesome-openclaw-agents/main/README.md"
+        "https://raw.githubusercontent.com/mergisi/awesome-openclaw-agents/main/agents.json"
     )
     skillshub_cache_ttl: int = 300
 

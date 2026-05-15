@@ -84,3 +84,4 @@ corpus/cache/
 # Sandbox artifacts
 sandbox-traces/
 *.pcap
+demo/

@@ -205,8 +205,25 @@ class SshDeployer:
 
             # Bind channels.
             for channel in req.channels.selected:
-                acct = req.channels.account_ids.get(channel, "").strip()
-                binding = f"{channel}:{acct}" if acct else channel
+                fields = req.channels.channel_fields.get(channel, {})
+                # Export provider secrets as env vars before binding so they
+                # are available to the openclaw daemon at runtime.
+                for key, val in fields.items():
+                    if val:
+                        env_key = f"OPENCLAW_{channel.upper()}_{key.upper()}"
+                        safe_val = val.replace("'", "'\\''")
+                        await self._run(
+                            f"openclaw config set-env {env_key} '{safe_val}'",
+                            f"Configuring {channel} env: {env_key}",
+                            check=False,
+                        )
+                # Build the primary bind identifier from the first non-secret
+                # ID field (channel_id, room_id, phone_number, etc.) if present.
+                _id_priority = ["channel_id", "room_id", "phone_number", "phone_number_id"]
+                primary_id = next(
+                    (fields[k] for k in _id_priority if fields.get(k)), ""
+                ).strip()
+                binding = f"{channel}:{primary_id}" if primary_id else channel
                 await self._run(
                     f"openclaw agents bind --agent {ident.agent_id} --bind {binding}",
                     f"Binding channel: {binding}",

@@ -90,12 +90,12 @@ export function StepVps() {
 
       {vps.auth_method === "key" ? (
         <div>
-          <Label htmlFor="key">Private key (PEM)</Label>
+          <Label htmlFor="key">Private key — paste the full contents of your private key file (e.g. ~/.ssh/id_ed25519)</Label>
           <Textarea
             id="key"
             className="font-mono text-xs"
             rows={6}
-            placeholder="-----BEGIN OPENSSH PRIVATE KEY-----"
+            placeholder="Paste your private key here"
             value={vps.ssh_private_key}
             onChange={(e) => updateVps({ ssh_private_key: e.target.value })}
           />

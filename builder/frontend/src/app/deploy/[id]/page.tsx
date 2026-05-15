@@ -18,19 +18,32 @@ export default function DeployPage({ params }: { params: Promise<{ id: string }>
 
   const lastError = [...logs].reverse().find((l) => l.level === "error")?.message;
 
+  const statusLabel =
+    status === "deploying"
+      ? "Deploying…"
+      : status === "completed"
+      ? "Done"
+      : status === "failed"
+      ? "Failed"
+      : "Connecting…";
+
   return (
-    <div className="space-y-4">
-      <div>
-        <div className="text-xs uppercase tracking-wide text-muted-foreground">Deployment</div>
-        <div className="flex items-center gap-2 text-xl font-semibold">
-          {status === "deploying" && <Loader2 className="h-4 w-4 animate-spin" />}
-          {status === "deploying" ? "Deploying…" : status === "completed" ? "Done" : status === "failed" ? "Failed" : "Connecting…"}
-          <span className="text-muted-foreground font-mono text-xs">({id.slice(0, 8)})</span>
-        </div>
+    <div className="space-y-6">
+      <div className="space-y-1">
+        <p className="label-tag">Deployment · {id.slice(0, 8)}</p>
+        <h1 className="flex items-center gap-3 text-2xl font-extrabold tracking-tight">
+          {status === "deploying" && (
+            <Loader2 className="h-5 w-5 animate-spin oc-orange" />
+          )}
+          {statusLabel}
+          {status === "completed" && <span className="oc-orange text-lg">✓</span>}
+          {status === "failed" && <span className="text-destructive text-lg">✗</span>}
+        </h1>
       </div>
+
       <div
         ref={scrollRef}
-        className="h-[60vh] overflow-auto rounded-md border bg-zinc-950 p-4 font-mono text-xs text-zinc-200 shadow-inner"
+        className="h-[60vh] overflow-auto rounded-xl border border-border bg-zinc-950 p-4 font-mono text-xs text-zinc-200 shadow-inner"
       >
         {logs.length === 0 && (
           <div className="text-zinc-500">Waiting for output…</div>
@@ -39,6 +52,7 @@ export default function DeployPage({ params }: { params: Promise<{ id: string }>
           <LogLine key={i} log={l} />
         ))}
       </div>
+
       {(status === "completed" || status === "failed") && (
         <DeployStatusCard
           status={status}

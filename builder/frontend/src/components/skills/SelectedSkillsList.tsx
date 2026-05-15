@@ -19,7 +19,7 @@ export function SelectedSkillsList() {
     pending.forEach((s) => patchSkill(s.id, { security_status: "reviewing" }));
     try {
       const r = await reviewSkills({
-        skills: pending.map((s) => ({ id: s.id, name: s.name, raw_url: s.raw_url })),
+        skills: pending.map((s) => ({ id: s.id, name: s.name, raw_url: s.raw_url, content: s.content })),
       });
       r.results.forEach((res) => {
         patchSkill(res.id, {
