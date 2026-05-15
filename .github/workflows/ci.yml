@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  lint-type-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history so build_info.py can read tags
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install project (with dev extras)
+        run: uv pip install --system -e ".[dev,gateway]"
+
+      - name: Regenerate __about__.py from git
+        run: python scripts/build_info.py
+
+      - name: Ruff (format check)
+        run: ruff format --check .
+
+      - name: Ruff (lint)
+        run: ruff check .
+
+      - name: Mypy
+        run: mypy src tests
+
+      - name: Pytest
+        run: pytest -q
+
+      - name: Build wheel (smoke)
+        run: |
+          pip install build
+          python -m build --wheel
+
+  conventional-commits:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: webiny/action-conventional-commits@v1.3.0
