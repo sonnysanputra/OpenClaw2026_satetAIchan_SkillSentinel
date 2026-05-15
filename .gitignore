@@ -1,0 +1,86 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# uv / poetry
+uv.lock
+poetry.lock
+
+# Testing & coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+
+# Type checking
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+.Spotlight-V100
+.Trashes
+
+# Build artifacts
+src/skillsentinel/__about__.py.bak
+
+# Secrets — these should NEVER be committed
+.env
+.env.local
+*.pem
+*.key
+secrets/
+*.crt
+
+# Local runtime state
+~/.openclaw/
+*.log
+*.sock
+
+# Corpus — large; managed via git-lfs or external storage
+corpus/raw/
+corpus/cache/
+
+# Sandbox artifacts
+sandbox-traces/
+*.pcap

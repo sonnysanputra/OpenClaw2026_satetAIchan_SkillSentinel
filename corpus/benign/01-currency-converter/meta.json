@@ -1,0 +1,6 @@
+{
+  "label": "benign",
+  "categories": [],
+  "source": "hand-crafted",
+  "notes": "Clean utility, declared network use, declared allowlist."
+}

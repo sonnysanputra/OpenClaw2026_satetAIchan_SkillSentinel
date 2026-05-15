@@ -1,0 +1,6 @@
+{
+  "label": "benign",
+  "categories": ["scary_but_legitimate"],
+  "source": "hand-crafted",
+  "notes": "Uses subprocess + writes files — pattern-matchers will be tempted to flag. Argv is constrained to a single path; no shell=True; no eval."
+}

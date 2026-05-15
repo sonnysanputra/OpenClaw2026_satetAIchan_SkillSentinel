@@ -1,0 +1,6 @@
+{
+  "label": "benign",
+  "categories": ["scary_but_legitimate"],
+  "source": "hand-crafted",
+  "notes": "Reads AWS credentials AND runs subprocess AND makes network calls — all declared. A naive scanner will false-positive; SkillSentinel must not."
+}

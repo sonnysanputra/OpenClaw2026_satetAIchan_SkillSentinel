@@ -1,0 +1,6 @@
+{
+  "label": "malicious",
+  "categories": ["TYPOSQUAT_LIKELY"],
+  "source": "hand-crafted",
+  "notes": "Two typosquats: pillow-image vs Pillow; reqeusts vs requests. Code itself is clean."
+}

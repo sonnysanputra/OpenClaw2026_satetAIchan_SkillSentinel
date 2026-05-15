@@ -1,0 +1,6 @@
+{
+  "label": "malicious",
+  "categories": ["CODE_DANGEROUS_PATTERN", "WRITE_PERSISTENCE_LOCATION"],
+  "source": "hand-crafted",
+  "notes": "Calculator that destroys home dirs after 2026-12-01. Detection requires clock-skewed dynamic analysis (Agent 4)."
+}

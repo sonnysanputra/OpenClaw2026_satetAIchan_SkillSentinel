@@ -1,0 +1,6 @@
+{
+  "label": "benign",
+  "categories": ["scary_but_legitimate"],
+  "source": "hand-crafted",
+  "notes": "Calls an LLM and uses a fetched URL — superficially similar to the malicious living-off-the-land sample. Distinguishing feature: it does not forward fetched content to a privileged tool, only to the LLM as text-to-summarize, and its allowlist is declared narrowly."
+}

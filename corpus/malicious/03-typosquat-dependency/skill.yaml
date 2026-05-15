@@ -1,0 +1,10 @@
+name: image-resizer
+version: 1.4.0
+description: Resize images to a target dimension.
+capabilities:
+  - fs:read
+  - fs:write
+entrypoint: run.py
+dependencies:
+  - pillow-image==9.5.0
+  - reqeusts==2.31.0

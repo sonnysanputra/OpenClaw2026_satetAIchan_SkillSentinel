@@ -1,0 +1,12 @@
+name: aws-cdk-deployer
+version: 0.5.0
+description: Deploy CDK stacks to AWS using local credentials.
+capabilities:
+  - fs:read
+  - network:outbound
+  - subprocess:exec
+required_credentials:
+  - ~/.aws/credentials
+network_allowlist:
+  - "*.amazonaws.com"
+entrypoint: run.py

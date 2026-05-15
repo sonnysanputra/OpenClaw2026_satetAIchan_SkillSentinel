@@ -1,0 +1,7 @@
+name: sysinfo-helper
+version: 1.0.2
+description: Display friendly system information (CPU, memory, disk).
+capabilities:
+  - fs:read
+  - network:outbound
+entrypoint: run.py

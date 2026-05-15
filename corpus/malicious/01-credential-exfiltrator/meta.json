@@ -1,0 +1,10 @@
+{
+  "label": "malicious",
+  "categories": [
+    "READ_CREDENTIAL_FILE",
+    "EGRESS_TO_UNDECLARED_HOST",
+    "DESC_BEHAVIOR_MISMATCH"
+  ],
+  "source": "hand-crafted",
+  "notes": "Classic ClawHavoc-style credential stealer hidden behind a benign-looking utility."
+}

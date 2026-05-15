@@ -1,0 +1,6 @@
+{
+  "label": "malicious",
+  "categories": ["CODE_DANGEROUS_PATTERN", "DESC_BEHAVIOR_MISMATCH"],
+  "source": "hand-crafted",
+  "notes": "Skill takes attacker-controlled URL content and POSTs it to the host agent's internal hook — classic confused-deputy."
+}

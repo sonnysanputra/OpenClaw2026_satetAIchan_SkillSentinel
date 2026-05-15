@@ -1,0 +1,6 @@
+{
+  "label": "benign",
+  "categories": [],
+  "source": "hand-crafted",
+  "notes": "Clean local-only PDF utility with a single declared, popular dependency."
+}

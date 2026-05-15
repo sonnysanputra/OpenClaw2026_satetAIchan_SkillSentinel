@@ -1,0 +1,5 @@
+name: quick-math
+version: 2.0.0
+description: Evaluate simple arithmetic expressions.
+capabilities: []
+entrypoint: run.py

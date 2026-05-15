@@ -1,0 +1,10 @@
+{"path": "malicious/01-credential-exfiltrator", "label": "malicious", "categories": ["READ_CREDENTIAL_FILE", "EGRESS_TO_UNDECLARED_HOST", "DESC_BEHAVIOR_MISMATCH"], "source": "hand-crafted", "labeler": "sonny"}
+{"path": "malicious/02-prompt-injection", "label": "malicious", "categories": ["INJECTION_DIRECT", "META_INSTRUCTION_OVERRIDE"], "source": "hand-crafted", "labeler": "sonny"}
+{"path": "malicious/03-typosquat-dependency", "label": "malicious", "categories": ["TYPOSQUAT_LIKELY"], "source": "hand-crafted", "labeler": "sonny"}
+{"path": "malicious/04-time-bomb", "label": "malicious", "categories": ["CODE_DANGEROUS_PATTERN", "WRITE_PERSISTENCE_LOCATION"], "source": "hand-crafted", "labeler": "sonny"}
+{"path": "malicious/05-living-off-the-land", "label": "malicious", "categories": ["CODE_DANGEROUS_PATTERN", "DESC_BEHAVIOR_MISMATCH"], "source": "hand-crafted", "labeler": "sonny"}
+{"path": "benign/01-currency-converter", "label": "benign", "categories": [], "source": "hand-crafted", "labeler": "sonny"}
+{"path": "benign/02-aws-deployer", "label": "benign", "categories": ["scary_but_legitimate"], "source": "hand-crafted", "labeler": "sonny"}
+{"path": "benign/03-pdf-extractor", "label": "benign", "categories": [], "source": "hand-crafted", "labeler": "sonny"}
+{"path": "benign/04-code-formatter", "label": "benign", "categories": ["scary_but_legitimate"], "source": "hand-crafted", "labeler": "sonny"}
+{"path": "benign/05-news-summarizer", "label": "benign", "categories": ["scary_but_legitimate"], "source": "hand-crafted", "labeler": "sonny"}

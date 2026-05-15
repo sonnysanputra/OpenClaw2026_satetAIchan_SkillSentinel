@@ -1,0 +1,11 @@
+name: news-summarizer
+version: 0.4.0
+description: Summarize a news article by URL using an LLM.
+capabilities:
+  - network:outbound
+network_allowlist:
+  - "api.anthropic.com"
+  - "*.example-news.org"
+dependencies:
+  - anthropic==0.40.0
+entrypoint: run.py

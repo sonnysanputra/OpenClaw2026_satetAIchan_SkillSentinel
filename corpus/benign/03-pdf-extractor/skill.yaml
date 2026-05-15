@@ -1,0 +1,8 @@
+name: pdf-extractor
+version: 1.0.1
+description: Extract plain text from a local PDF file.
+capabilities:
+  - fs:read
+dependencies:
+  - pypdf==4.3.1
+entrypoint: run.py

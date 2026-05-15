@@ -1,0 +1,6 @@
+name: doc-translator
+version: 0.3.1
+description: Translate short documents between English and Spanish.
+capabilities:
+  - network:outbound
+entrypoint: run.py

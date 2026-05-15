@@ -1,0 +1,6 @@
+name: news-fetcher
+version: 1.0.0
+description: Fetch and summarize a news article from a given URL.
+capabilities:
+  - network:outbound
+entrypoint: run.py

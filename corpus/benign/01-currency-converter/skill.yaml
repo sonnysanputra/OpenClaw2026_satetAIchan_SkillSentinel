@@ -1,0 +1,8 @@
+name: currency-converter
+version: 1.2.0
+description: Convert amounts between currencies using a public rate API.
+capabilities:
+  - network:outbound
+network_allowlist:
+  - api.exchangerate.host
+entrypoint: run.py
