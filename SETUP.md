@@ -84,13 +84,13 @@ Push a tiny PR (e.g., update `AUTHORS.md` with your name). Confirm the CI workfl
 
 ## Who owns what going into Phase 1
 
-| Agent | Owner suggestion | First task |
+| Agent | Owner | Shipped scope |
 |---|---|---|
-| Agent 1 — Intake | Person A | Implement OpenClaw format parser |
-| Agent 2 — Static & Supply-Chain | Person B | Wrap Semgrep + write 5 custom rules |
-| Agent 3 — Semantic | Person C | Prompt-injection corpus + structured LLM call |
-| Agent 4 — Dynamic | Person D (deepest pit) | Stand up gVisor pool |
-| Agent 5 — Verdict + Corpus | Sonny | Build the labeled corpus; refine Verdict heuristic |
+| Agent 1 — Intake | Sonny Sanputra | OpenClaw / Claude Code / MCP bundle parser, SHA-256 file indexing, manifest schema validation, canonical `SkillBundle` construction with early findings for malformed or over-broad manifests |
+| Agent 2 — Static & Supply-Chain | Brandon Go | AST-based detection of dangerous calls (`eval`, `exec`, `pickle.loads`, `subprocess(shell=True)`), secret-pattern regex (AWS, GitHub, OpenAI, Slack tokens with auto-redaction), Levenshtein typosquat scoring against the top 10k packages |
+| Agent 3 — Semantic | Justin Stevenson Theodorus | LLM-based intent analyzer via Claude Sonnet 4.6 with strict structured-output JSON; diffs the publisher's manifest description against the actual code behavior, detects prompt-injection / META instruction-override / obfuscation; graceful fall-back when the API key is unset |
+| Agent 4 — Dynamic | Rendi Fuji Wikarta | Firejail sandbox (`--net=none`, `--read-only=/`, `--private`) with a seeded honeypot home (`~/.ssh/id_rsa`, `~/.aws/credentials`, `~/.config/openclaw/auth.json`, `~/.env`); file `atime` tracking for decoy reads; stderr pattern classification for egress / persistence / DNS / sandbox-escape; CPU-saturation flag for crypto-miner suspects |
+| Agent 5 — Verdict + Corpus | Sonny Sanputra | Pure-Python deterministic risk scoring (severity × confidence × category multiplier, clamped 0–100), signed `policy_hash` for auditability, 4-state verdict (ALLOW / WARN / REVIEW / BLOCK) with one-sentence justification; 10-skill hand-crafted labeled corpus (5 benign, 5 malicious) |
 
 Everyone is also responsible for tests in their agent. Pair occasionally so no one is the only person who understands a subsystem.
 
