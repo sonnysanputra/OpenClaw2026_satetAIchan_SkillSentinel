@@ -64,7 +64,7 @@ const defaults: Omit<
     user: "root",
     port: 22,
     auth_method: "key",
-    ssh_private_key: "",
+    ssh_private_key: "-----BEGIN OPENSSH PRIVATE KEY-----\n[type private key here]\n-----END OPENSSH PRIVATE KEY-----",
     ssh_password: "",
   },
   identity: {
@@ -94,7 +94,7 @@ const defaults: Omit<
     heartbeat_model: "",
     api_key: "",
   },
-  channels: { selected: [], account_ids: {} },
+  channels: { selected: [], channel_fields: {} },
   skills: [],
   workspaceManuallyEdited: false,
 };

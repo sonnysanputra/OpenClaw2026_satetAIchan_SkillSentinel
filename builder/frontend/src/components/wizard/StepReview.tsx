@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useWizard } from "@/store/wizard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { previewFiles, startDeploy } from "@/lib/api";
 import type { DeployRequest, FilePreviewResponse, SkillItem } from "@/types";
@@ -44,7 +43,7 @@ function CopyBtn({ text }: { text: string }) {
       }}
     >
       {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-      {copied ? " Copied" : " Copy"}
+      {copied ? "Copied" : "Copy"}
     </Button>
   );
 }
@@ -61,8 +60,7 @@ export function StepReview() {
     setLoadingPreview(true);
     setPreviewErr(null);
     try {
-      const r = await previewFiles(buildDeployRequest(state));
-      setPreview(r);
+      setPreview(await previewFiles(buildDeployRequest(state)));
     } catch (e: any) {
       setPreviewErr(e?.response?.data?.detail || e?.message || "Could not render preview");
     } finally {
@@ -90,73 +88,100 @@ export function StepReview() {
     blockedSkills.length === 0;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div>
-        <h2 className="text-xl font-semibold">Review & deploy</h2>
-        <p className="text-sm text-muted-foreground">Confirm the summary, preview generated files, then ship it.</p>
+        <p className="label-tag">Final check</p>
+        <h2 className="text-xl font-extrabold tracking-tight">Review & deploy</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Confirm the summary, preview generated files, then ship it.
+        </p>
       </div>
 
-      <Card>
-        <CardContent className="space-y-2 pt-6 text-sm">
-          <div className="grid gap-2 sm:grid-cols-2">
-            <Row k="Agent">
-              <span className="font-medium">
-                {state.identity.emoji} {state.identity.agent_name}{" "}
-                <span className="text-muted-foreground">({state.identity.agent_id})</span>
+      {/* Summary grid */}
+      <div className="card-sentinel p-5 space-y-1">
+        <p className="label-tag mb-3">Configuration summary</p>
+        <div className="grid gap-y-2 gap-x-6 sm:grid-cols-2 text-sm">
+          <Row k="Agent">
+            <span className="font-semibold">
+              {state.identity.emoji} {state.identity.agent_name}{" "}
+              <span className="text-muted-foreground font-mono text-xs">
+                ({state.identity.agent_id})
               </span>
-            </Row>
-            <Row k="VPS">{state.vps.user}@{state.vps.host}:{state.vps.port}</Row>
-            <Row k="Model">{state.model.provider}/{state.model.model}</Row>
-            <Row k="Persona">{state.persona.tone}, {state.persona.traits.join(", ") || "—"}</Row>
-            <Row k="Channels">{state.channels.selected.join(", ") || "none"}</Row>
-            <Row k="Skills">
-              {state.skills.length === 0
-                ? "none"
-                : `${state.skills.filter((s) => s.security_status === "approved").length} approved · ${state.skills.filter((s) => s.security_status === "overridden").length} overridden${blockedSkills.length ? ` · ${blockedSkills.length} BLOCKED` : ""}`}
-            </Row>
+            </span>
+          </Row>
+          <Row k="VPS">
+            {state.vps.user}@{state.vps.host}:{state.vps.port}
+          </Row>
+          <Row k="Model">
+            {state.model.provider}/{state.model.model}
+          </Row>
+          <Row k="Persona">
+            {state.persona.tone}, {state.persona.traits.join(", ") || "—"}
+          </Row>
+          <Row k="Channels">
+            {state.channels.selected.join(", ") || "none"}
+          </Row>
+          <Row k="Skills">
+            {state.skills.length === 0
+              ? "none"
+              : `${state.skills.filter((s) => s.security_status === "approved").length} approved · ${state.skills.filter((s) => s.security_status === "overridden").length} overridden${blockedSkills.length ? ` · ${blockedSkills.length} BLOCKED` : ""}`}
+          </Row>
+        </div>
+        {blockedSkills.length > 0 && (
+          <div className="mt-3">
+            <Badge variant="destructive">
+              {blockedSkills.length} blocked skill(s) must be removed or overridden before deploy
+            </Badge>
           </div>
-          {blockedSkills.length > 0 && (
-            <Badge variant="destructive">{blockedSkills.length} blocked skill(s) must be removed or overridden before deploy</Badge>
-          )}
-        </CardContent>
-      </Card>
+        )}
+      </div>
 
-      <Card>
-        <CardContent className="space-y-3 pt-6">
-          <div className="flex items-center justify-between">
-            <div className="text-sm font-medium">Generated workspace files</div>
-            <Button size="sm" variant="secondary" onClick={loadPreview} disabled={loadingPreview}>
-              {loadingPreview && <Loader2 className="h-3.5 w-3.5 animate-spin" />} Render preview
-            </Button>
-          </div>
-          {previewErr && <div className="text-xs text-destructive">{previewErr}</div>}
-          {preview && (
-            <Tabs defaultValue="soul" className="w-full">
-              <TabsList>
-                <TabsTrigger value="soul">SOUL.md</TabsTrigger>
-                <TabsTrigger value="user">USER.md</TabsTrigger>
-                <TabsTrigger value="agents">AGENTS.md</TabsTrigger>
-                <TabsTrigger value="identity">IDENTITY.md</TabsTrigger>
-              </TabsList>
-              {[
-                { key: "soul", val: preview.soul_md },
-                { key: "user", val: preview.user_md },
-                { key: "agents", val: preview.agents_md },
-                { key: "identity", val: preview.identity_md },
-              ].map(({ key, val }) => (
-                <TabsContent key={key} value={key}>
-                  <div className="mb-2 flex justify-end"><CopyBtn text={val} /></div>
-                  <pre className="max-h-[400px] overflow-auto rounded-md bg-muted p-3 font-mono text-xs">{val}</pre>
-                </TabsContent>
-              ))}
-            </Tabs>
-          )}
-        </CardContent>
-      </Card>
+      {/* File preview */}
+      <div className="card-sentinel p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <p className="label-tag">Generated workspace files</p>
+          <Button size="sm" variant="outline" onClick={loadPreview} disabled={loadingPreview}>
+            {loadingPreview && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+            Render preview
+          </Button>
+        </div>
+        {previewErr && (
+          <div className="text-xs text-destructive">{previewErr}</div>
+        )}
+        {preview && (
+          <Tabs defaultValue="soul" className="w-full">
+            <TabsList>
+              <TabsTrigger value="soul">SOUL.md</TabsTrigger>
+              <TabsTrigger value="user">USER.md</TabsTrigger>
+              <TabsTrigger value="agents">AGENTS.md</TabsTrigger>
+              <TabsTrigger value="identity">IDENTITY.md</TabsTrigger>
+            </TabsList>
+            {[
+              { key: "soul", val: preview.soul_md },
+              { key: "user", val: preview.user_md },
+              { key: "agents", val: preview.agents_md },
+              { key: "identity", val: preview.identity_md },
+            ].map(({ key, val }) => (
+              <TabsContent key={key} value={key}>
+                <div className="mb-2 flex justify-end">
+                  <CopyBtn text={val} />
+                </div>
+                <pre className="max-h-[400px] overflow-auto rounded-lg border border-border bg-muted/50 p-3 font-mono text-xs text-foreground/80">
+                  {val}
+                </pre>
+              </TabsContent>
+            ))}
+          </Tabs>
+        )}
+      </div>
 
       <div className="flex justify-end">
         <Button size="lg" disabled={!ready || deploying} onClick={onDeploy}>
-          {deploying ? <Loader2 className="h-4 w-4 animate-spin" /> : <Rocket className="h-4 w-4" />}
+          {deploying ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Rocket className="h-4 w-4" />
+          )}
           {deploying ? "Starting deploy…" : "Deploy agent"}
         </Button>
       </div>
@@ -166,9 +191,9 @@ export function StepReview() {
 
 function Row({ k, children }: { k: string; children: React.ReactNode }) {
   return (
-    <div className="flex items-baseline gap-2">
-      <span className="w-24 text-xs uppercase tracking-wide text-muted-foreground">{k}</span>
-      <span className="text-sm">{children}</span>
+    <div className="flex items-baseline gap-3">
+      <span className="w-20 shrink-0 label-tag">{k}</span>
+      <span>{children}</span>
     </div>
   );
 }

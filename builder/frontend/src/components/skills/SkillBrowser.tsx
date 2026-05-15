@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { listSkills } from "@/lib/api";
@@ -16,14 +16,12 @@ export function SkillBrowser() {
   const selected = useWizard((s) => s.skills);
   const addSkill = useWizard((s) => s.addSkill);
 
-  // debounce
-  useEffect(() => {
-    const t = setTimeout(() => {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
       setSearch(searchInput);
       setPage(1);
-    }, 300);
-    return () => clearTimeout(t);
-  }, [searchInput]);
+    }
+  }
 
   const q = useQuery({
     queryKey: ["skills", search, page],
@@ -41,6 +39,7 @@ export function SkillBrowser() {
       category: s.category,
       install_count: s.install_count,
       raw_url: s.raw_url,
+      content: s.content ?? null,
       security_status: "pending",
       security_reason: null,
     };
@@ -50,9 +49,10 @@ export function SkillBrowser() {
   return (
     <div className="rounded-lg border p-3">
       <Input
-        placeholder="Search skills…"
+        placeholder="Search skills… (press Enter)"
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
       <div className="mt-3 space-y-2 max-h-[500px] overflow-y-auto pr-1">
         {q.isLoading && (

@@ -50,7 +50,8 @@ export interface ModelConfig {
 
 export interface ChannelsConfig {
   selected: string[];
-  account_ids: Record<string, string>;
+  /** provider id → { fieldKey → value } */
+  channel_fields: Record<string, Record<string, string>>;
 }
 
 export type SecurityStatus =
@@ -68,6 +69,7 @@ export interface SkillItem {
   category?: string;
   install_count?: number;
   raw_url: string;
+  content?: string | null;
   security_status: SecurityStatus;
   security_reason: string | null;
 }
@@ -81,6 +83,7 @@ export interface SkillCatalogItem {
   category: string;
   install_count: number;
   raw_url: string;
+  content?: string | null;
 }
 
 export interface SkillsListResponse {
@@ -107,7 +110,7 @@ export interface SshTestResponse {
 }
 
 export interface SkillReviewRequest {
-  skills: { id: string; name: string; raw_url: string }[];
+  skills: { id: string; name: string; raw_url: string; content?: string | null }[];
 }
 
 export interface SkillReviewResult {

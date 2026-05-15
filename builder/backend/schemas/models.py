@@ -59,7 +59,7 @@ class ModelConfig(BaseModel):
 
 class ChannelsConfig(BaseModel):
     selected: list[str] = Field(default_factory=list)
-    account_ids: dict[str, str] = Field(default_factory=dict)
+    channel_fields: dict[str, dict[str, str]] = Field(default_factory=dict)
 
 
 class DeploySkillItem(BaseModel):
@@ -113,6 +113,7 @@ class SkillCatalogItem(BaseModel):
     category: str = "community"
     install_count: int = 0
     raw_url: str
+    content: str | None = None
 
 
 class SkillsListResponse(BaseModel):
@@ -129,6 +130,7 @@ class SkillReviewItem(BaseModel):
     id: str
     name: str
     raw_url: str
+    content: str | None = None
 
 
 class SkillReviewRequest(BaseModel):
